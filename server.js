@@ -13,7 +13,7 @@ var app = express();
 
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
-app.use(express.session({secret:'my secret'}));
+app.use(express.session({secret:'beautiful panda'}));
 
 app.use(function(req,res,next) {
     if (req.session.loggedIn) {
@@ -62,6 +62,11 @@ app.post('/signup', function(req,res,next) {
         if (err) return next(err);
         res.redirect('/login/' + user.email);
     });
+});
+
+app.get('/logout', function(req,res) {
+    req.session.loggedIn = null;
+    res.redirect('/');
 });
 
 app.listen('3000');
