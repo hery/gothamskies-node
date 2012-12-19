@@ -8,7 +8,7 @@
   },
   "subdomain": "gothamskies",
   "scripts": {
-    "start": "web.js"
+    "start": "server.js"
   },
   "engines": {
     "node": "0.8.x"
