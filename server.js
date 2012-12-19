@@ -69,7 +69,10 @@ app.get('/logout', function(req,res) {
     res.redirect('/');
 });
 
-app.listen('56557');
+var port = process.env.PORT || 5000;
+app.listen(port, function() {
+  console.log("Listening on " + port);
+});
 
 var Schema = mongoose.Schema
 
