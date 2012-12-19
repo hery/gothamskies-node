@@ -69,7 +69,7 @@ app.get('/logout', function(req,res) {
     res.redirect('/');
 });
 
-app.listen('3000');
+app.listen('56557');
 
 var Schema = mongoose.Schema
 
