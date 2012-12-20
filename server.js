@@ -11,6 +11,9 @@ mongoose.connect('mongodb://aeon:zamaek@linus.mongohq.com:10077/app10212447', fu
 var express = require('express');
 var app = express();
 
+var MemJS = require("memjs").Client;
+memjs = MemJS.create()
+
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
 app.use(express.session({secret:'beautiful panda'}));
