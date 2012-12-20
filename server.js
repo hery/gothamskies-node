@@ -3,7 +3,7 @@
 var status = 'Not connected';
 
 var mongoose = require('mongoose');
-mongoose.connect('MONGOHQ_URL', function (req,res) { 
+mongoose.connect('mongodb://pandaman:ilovebamboo@linus.mongohq.com:10077/app10212447', function (req,res) { 
     console.log('Connected to db.');
     status = 'Connected';
 });
