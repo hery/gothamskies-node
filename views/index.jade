@@ -1,10 +1,6 @@
 extends layout
 block body
-  if (authenticated)
-    p Welcome back, #{me.first}
-    a(href="/logout") Logout
-  else 
-    p Welcome, new visitor!
-    ul  
-      li: a(href="/login") Login
-      li: a(href="/signup") Signup
+  p Welcome, new visitor!
+  ul  
+    li: a(href="/login") Login
+    li: a(href="/signup") Signup

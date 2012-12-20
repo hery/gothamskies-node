@@ -16,21 +16,21 @@ memjs = MemJS.create()
 
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
-app.use(express.session({secret:'beautiful panda'}));
+// app.use(express.session({secret:'beautiful panda'}));
 
-app.use(function(req,res,next) {
-    if (req.session.loggedIn) {
-        res.locals.authenticated = true;
-        User.findById(req.session.loggedIn, function(err,doc) {
-            if (err) return next(err);
-            res.locals.me = doc;
-            next();
-        });
-    } else {
-        res.locals.authenticated = false;
-        next();
-    }
-});
+// app.use(function(req,res,next) {
+//      if (req.session.loggedIn) {
+//         res.locals.authenticated = true;
+//         User.findById(req.session.loggedIn, function(err,doc) {
+//             if (err) return next(err);
+//             res.locals.me = doc;
+//             next();
+//         });
+//     } else {
+//         res.locals.authenticated = false;
+//         next();
+//     }
+// });
 
 app.set('view engine', 'jade');
 app.set('view options', {layout: false});
@@ -51,7 +51,7 @@ app.post('/login', function (req,res) {
     User.findOne({ email: req.body.user.email, password: req.body.user.password }, function (err,doc) {
         if (err) return next(err);
         if (!doc) return res.send('<p>User not found. Go back and try again</p>');
-        req.session.loggedIn = doc._id.toString();  
+//        req.session.loggedIn = doc._id.toString();  
         res.redirect('/');
     });
 });
@@ -68,7 +68,7 @@ app.post('/signup', function(req,res,next) {
 });
 
 app.get('/logout', function(req,res) {
-    req.session.loggedIn = null;
+//     req.session.loggedIn = null;
     res.redirect('/');
 });
 
