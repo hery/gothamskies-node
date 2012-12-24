@@ -1,6 +1,23 @@
 extends layout
 block body
-  p Welcome, new visitor!
-  ul  
-    li: a(href="/login") Login
-    li: a(href="/signup") Signup
+  h4 title
+  if (authenticated)
+    p Welcome, #{username}
+  else
+    p Welcome, guest!
+  if (authenticated)
+    ul
+      if (accountType == 'guest')
+        li: a(href="/explore") Explore (#{accountType})
+      else if (accountType == 'host')
+        li: a(href="/newroof") Add a Rooftop (#{accountType})
+      else
+      // if accountType isn't set, display nothing.
+      li: a(href="/logout") Logout
+      // li: a(href="/setup") My Account
+   else
+     ul
+       li: a(href="/signup") Signup
+       li: a(href="/login") Login
+
+  hr 
