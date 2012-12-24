@@ -123,10 +123,8 @@ var User = mongoose.model('User', new Schema({
     type: String
 }));
 
-var Root = mongoose.model('Root', new Schema({
-    first: String,
-    last: String,
-    email: {type:String, unique:true},
-    password: {type:String,index:true},
-    type: String
+var Roof = mongoose.model('Roof', new Schema({
+    name: String,
+    location: String,
+    picture: String
 }));
