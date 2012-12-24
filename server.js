@@ -1,19 +1,18 @@
-// server.js
-
+// server.js 
 var mongoose = require('mongoose');
 var status = 'Not connected';
 
 // Remote db for production environment
-// mongoose.connect('mongodb://pandaman:ilovebamboo@linus.mongohq.com:10077/app10212447', function (req,res) { 
-//     console.log('Connected to db.');
-//     status = 'Connected';
-// });
-
-// local db for developing environment
-mongoose.connect('mongodb://localhost/local', function (req,res) { 
+mongoose.connect('mongodb://pandaman:ilovebamboo@linus.mongohq.com:10077/app10212447', function (req,res) { 
     console.log('Connected to db.');
     status = 'Connected';
 });
+
+// local db for developing environment
+// mongoose.connect('mongodb://localhost/local', function (req,res) { 
+//     console.log('Connected to db.');
+//     status = 'Connected';
+// });
 
 var express = require('express');
 // Use RedisStore to avoid default MemoryStore warning in production environment
