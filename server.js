@@ -3,22 +3,24 @@ var mongoose = require('mongoose');
 var status = 'Not connected';
 
 var express = require('express'),
-	url = require('url')'
+	url = require('url'),
 // Use RedisStore to avoid default MemoryStore warning in production environment
-	var RedisStore = require('connect-redis')(express);
+	RedisStore = require('connect-redis')(express);
+
 var app = express();
 
-app.configure('production', function () {
+ app.configure('production', function () {
     var redisUrl = url.parse(process.env.MYREDIS_URL),
         redisAuth = redisUrl.auth.split(':');  
+
     app.set('redisHost', redisUrl.hostname);
     app.set('redisPort', redisUrl.port);
     app.set('redisDb', redisAuth[0]);
     app.set('redisPass', redisAuth[1]);
-});
+ });
 
 // Remote db for production environment
-mongoose.connect(process.env.MONGOHQ_URL, function (req,res) { 
+    mongoose.connect(process.env.MONGOHQ_URL, function (req,res) { 
     console.log('Connected to db.');
     status = 'Connected';
 });
@@ -35,7 +37,6 @@ mongoose.connect(process.env.MONGOHQ_URL, function (req,res) {
 
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
-
 app.use(express.session({
         secret: 'secretpanda',
         store: new RedisStore({
