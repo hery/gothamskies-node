@@ -2,8 +2,23 @@
 var mongoose = require('mongoose');
 var status = 'Not connected';
 
+var express = require('express'),
+	url = require('url')'
+// Use RedisStore to avoid default MemoryStore warning in production environment
+	var RedisStore = require('connect-redis')(express);
+var app = express();
+
+app.configure('production', function () {
+    var redisUrl = url.parse(process.env.MYREDIS_URL),
+        redisAuth = redisUrl.auth.split(':');  
+    app.set('redisHost', redisUrl.hostname);
+    app.set('redisPort', redisUrl.port);
+    app.set('redisDb', redisAuth[0]);
+    app.set('redisPass', redisAuth[1]);
+});
+
 // Remote db for production environment
-mongoose.connect('mongodb://pandaman:ilovebamboo@linus.mongohq.com:10077/app10212447', function (req,res) { 
+mongoose.connect(process.env.MONGOHQ_URL, function (req,res) { 
     console.log('Connected to db.');
     status = 'Connected';
 });
@@ -14,11 +29,6 @@ mongoose.connect('mongodb://pandaman:ilovebamboo@linus.mongohq.com:10077/app1021
 //     status = 'Connected';
 // });
 
-var express = require('express');
-// Use RedisStore to avoid default MemoryStore warning in production environment
-var RedisStore = require('connect-redis')(express);
-var app = express();
-
 // Was going to use MemJS as a MemoryStore, but no.
 // var MemJS = require("memjs").Client;
 // memjs = MemJS.create()
@@ -26,8 +36,15 @@ var app = express();
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
 
-// app.use(express.session({secret:'beautiful panda'}));
-app.use(express.session({store: new RedisStore, secret:'beautiful panda'}));
+app.use(express.session({
+        secret: 'secretpanda',
+        store: new RedisStore({
+            host: app.set('redisHost'),
+            port: app.set('redisPort'),
+            db: app.set('redisDb'),
+            pass: app.set('redisPass')
+        })
+    }));
 
 // Authentication middleware // Needs some review
 app.use(function(req,res,next) {
