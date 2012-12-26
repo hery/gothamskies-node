@@ -108,6 +108,21 @@ app.get('/logout', function(req,res) {
     res.redirect('/');
 });
 
+app.get('/newroof', function(req,res) {
+	res.render('newroof');	
+});
+
+app.post('/newroof', function(req,res) {
+	var roof = new Roof(req.body.roof).save(function(err, user) {
+		if (err) return next(err);
+		});
+		res.redirect('/');	
+});
+
+app.get('/explore', function(req,res) {
+	res.render('explore');	
+});
+
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
   console.log("Listening on " + port);
