@@ -1,3 +1,7 @@
 extends layout
 block body
-	p Prout!
+  p Available rooftops
+  ul
+    each roof in roofs
+      li: a(href="/roof/#{roof._id}") #{roof.name}
+  p: a(href="/") back

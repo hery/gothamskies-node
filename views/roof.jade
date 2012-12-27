@@ -1,0 +1,22 @@
+extends layout
+block body
+ form(action="/accessreq", method="POST")
+   fieldset
+     legend Access Request
+     p
+       label #{roof.name}
+     p 
+       label #{roof.location}
+     p
+       input(type="hidden", name="AccessRequest[hostId]", value="#{roof.owner}")
+       input(type="hidden", name="AccessRequest[hostName]", value="#{roof.ownerName}")
+       input(type="hidden", name="AccessRequest[roofId]", value="#{roof._id}")
+       input(type="hidden", name="AccessRequest[roofName]", value="#{roof.name}")
+     p
+       button Submit
+  
+  // h5 #{roof.name}
+  // p #{roof.location}
+  // p #{roof.picture}
+  // p: a(href="/accessreq") request access
+  // p: a(href="/explore") back

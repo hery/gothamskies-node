@@ -113,15 +113,53 @@ app.get('/newroof', function(req,res) {
 });
 
 app.post('/newroof', function(req,res) {
-	var roof = new Roof(req.body.roof).save(function(err, user) {
+	var roof = new Roof(req.body.roof);
+	roof.set({owner: res.locals.me._id,
+		ownerName: res.locals.me.last});
+	roof.save(function(err, roof) {
 		if (err) return next(err);
 		});
 		res.redirect('/');	
 });
 
 app.get('/explore', function(req,res) {
-	res.render('explore');	
+	Roof.find({}, function(err, doc) {
+		if (err) return next(err);
+		if (!doc) return res.send("No available rooftops.");
+		var roof = doc;
+		res.render('explore', {roofs:doc});	
+	});
 });
+
+app.get('/roof/:roofid', function(req,res) {
+	// Overkill declaration..?
+	// var ObjectId = require('mongoose').Types.ObjectId;
+	// myroofid = new ObjectId(req.params.roofid);
+	Roof.findOne({_id:req.params.roofid}, function(err,roof) {
+		res.render('roof', {roof:roof});
+	});
+});
+
+app.post('/accessreq', function(req, res) {
+	var accessRequest = new AccessRequest(req.body.AccessRequest);
+	accessRequest.set({guestId: res.locals.me._id,
+	       			guestName: res.locals.me.last,	
+				paid:false, 	
+				confirmed:false,
+	});	
+	accessRequest.save(function(err, accessRequest) {
+		if (err) return next(err);
+		});
+		res.redirect('/');	
+});	
+
+app.get('/userrequests', function(req, res) {
+	var query = AccessRequest.find({});
+	query.where('guestId', res.locals.me._id);
+	query.exec(function (err, accessrequests) {
+			res.render('userrequests', {userrequests:accessrequests});
+	});
+});	
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
@@ -140,6 +178,19 @@ var User = mongoose.model('User', new Schema({
 
 var Roof = mongoose.model('Roof', new Schema({
     name: String,
+    owner: String,
+    ownerName: String,
     location: String,
     picture: String
+}));
+
+var AccessRequest = mongoose.model('AccessRequest', new Schema({
+    guestId: String,
+    guestName: String,
+    hostId: String,
+    hostName: String,
+    roofId: String,
+    roofName: String,
+    paid: Boolean,
+    confirmed:Boolean
 }));
