@@ -1,9 +1,35 @@
 doctype 5
 html(lang="en")
   head
-    title title
+          title title
+          link(rel="stylesheet", href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css")
+          script(src="http://code.jquery.com/jquery-1.8.3.js")
+          script(src="http://code.jquery.com/ui/1.9.2/jquery-ui.js")
+          script
+            $(function() {
+              $( "#datepicker" ).datepicker();
+            });
   body
     hr
     h1 GS
-    block body
-
+    if (authenticated)
+      p Welcome, #{me.first}!
+    else
+      p Welcome, guest!
+    if (authenticated)
+      ul
+        if (me.type == 'guest')
+          li: a(href="/explore") Explore (#{me.type})
+        else if (me.type == 'host')
+          li: a(href="/newroof") Add a Rooftop (#{me.type})
+        else
+                // if accountType isn't set, display nothing.
+        li: a(href="/userrequests") Open requests
+        li: a(href="/logout") Logout
+        // li: a(href="/setup") My Account
+     else
+       ul
+         li: a(href="/signup") Signup
+         li: a(href="/login") Login
+    hr
+  block body

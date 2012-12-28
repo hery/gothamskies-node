@@ -154,12 +154,30 @@ app.post('/accessreq', function(req, res) {
 });	
 
 app.get('/userrequests', function(req, res) {
+	type = res.locals.me.type;
+	userId = res.locals.me._id;
 	var query = AccessRequest.find({});
-	query.where('guestId', res.locals.me._id);
+	if (type=='guest')
+	{
+		query.where('guestId', userId);
+	} else {
+		query.where('hostId', userId);
+	}
 	query.exec(function (err, accessrequests) {
-			res.render('userrequests', {userrequests:accessrequests});
+		res.render('userrequests', {userrequests:accessrequests,
+			type: type});
 	});
-});	
+});
+
+app.get('/confirm/:requestId', function(req, res) {
+	var conditions = {_id:req.params.requestId}
+		, update = {confirmed:true}
+		, options = {multi:false};
+	AccessRequest.update(conditions, update, options, function(err,areq) {
+		res.redirect('/');
+	});
+});
+	
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
@@ -191,6 +209,8 @@ var AccessRequest = mongoose.model('AccessRequest', new Schema({
     hostName: String,
     roofId: String,
     roofName: String,
+    date: String,
+    time: String,
     paid: Boolean,
     confirmed:Boolean
 }));
