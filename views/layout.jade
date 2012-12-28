@@ -18,6 +18,7 @@ html(lang="en")
       p Welcome, guest!
     if (authenticated)
       ul
+        li: a(href='/') Home
         if (me.type == 'guest')
           li: a(href="/explore") Explore (#{me.type})
         else if (me.type == 'host')
