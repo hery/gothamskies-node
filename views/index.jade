@@ -1,2 +1,7 @@
 extends layout
 block body
+  if (authenticated)
+    j Welcome, #{me.first}!
+  else
+    p Welcome, guest!
+

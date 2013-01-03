@@ -1,24 +1,20 @@
 extends layout
-// block head
-//         script
-//           $(function() {
-//             $( "#datepicker" ).datepicker();
-//           }); 
 block body
- form(action="/accessreq", method="POST")
-   fieldset
-     legend Access Request
-     p Roof: #{roof.name}
-     p Location: #{roof.location}
-     p Date: 
-             input(type="text", name="AccessRequest[date]", id="datepicker")
-     p Time:
-             input(type="text", name="AccessRequest[time]")
-     p
-       input(type="hidden", name="AccessRequest[hostId]", value="#{roof.owner}")
-       input(type="hidden", name="AccessRequest[hostName]", value="#{roof.ownerName}")
-       input(type="hidden", name="AccessRequest[roofId]", value="#{roof._id}")
-       input(type="hidden", name="AccessRequest[roofName]", value="#{roof.name}")
-     p
-       button Submit
-     a(href="/explore") back
+  div(class="container")
+    form(action="/accessreq", method="POST")
+     fieldset
+       legend Access Request
+       p Roof: #{roof.name}
+       p Location: #{roof.location}
+       p Date: 
+               input(type="text", name="AccessRequest[date]", id="datepicker")
+       p Time:
+               input(type="text", name="AccessRequest[time]")
+       p
+         input(type="hidden", name="AccessRequest[hostId]", value="#{roof.owner}")
+         input(type="hidden", name="AccessRequest[hostName]", value="#{roof.ownerName}")
+         input(type="hidden", name="AccessRequest[roofId]", value="#{roof._id}")
+         input(type="hidden", name="AccessRequest[roofName]", value="#{roof.name}")
+       p
+         button Submit
+       a(href="/explore") back

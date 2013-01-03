@@ -1,23 +1,24 @@
 extends layout
 block body
-  each request in userrequests     
-    ul
-      li        
-        h4 Request #{request._id}
-        p (From #{request.guestName} to #{request.hostName})
-        p @ #{request.roofName}, (Neighborhood)
-        p Date: #{request.date}, #{request.time}
-        if (type == 'guest')
-          if (!request.paid)
-            p Paid: #{request.paid} <a href="/pay">Pay</a>
-          p Confirmed: #{request.confirmed}
-        else if (type == 'host')
-          p Paid: #{request.paid} 
-          p Confirmed: #{request.confirmed} 
-          if (!request.confirmed) 
-            <a href="/confirm/#{request._id}">Confirm</a>
-        else
-          p Prout!
+  div(class="container")
+    each request in userrequests     
+      ul
+        li        
+          h4 Request #{request._id}
+          p (From #{request.guestName} to #{request.hostName})
+          p @ #{request.roofName}, (Neighborhood)
+          p Date: #{request.date}, #{request.time}
+          if (type == 'guest')
+            if (!request.paid)
+              p Paid: #{request.paid} <a href="/pay">Pay</a>
+            p Confirmed: #{request.confirmed}
+          else if (type == 'host')
+            p Paid: #{request.paid} 
+            p Confirmed: #{request.confirmed} 
+            if (!request.confirmed) 
+              <a href="/confirm/#{request._id}">Confirm</a>
+          else
+            p Prout!
 
-  a(href="/") Back
+    a(href="/") Back
 
