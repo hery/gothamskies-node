@@ -9,6 +9,12 @@ html(lang="en")
         padding-top:60px;
         padding-bottom:40px;
       }
+      h1.hero-text {
+        color:white;
+      }
+      .hero-unit {
+        background-image: url(http://www.deviantart.com/download/176218464/Blue_blue_sky_by_youwatchmebleed.jpg)
+      }
     link(rel="stylesheet", href="/css/bootstrap-responsive.css")
     script(src="http://code.jquery.com/jquery-1.8.3.js")
     script(src="http://code.jquery.com/ui/1.9.2/jquery-ui.js")
@@ -31,7 +37,11 @@ html(lang="en")
             span(class="icon-bar")
           a(class="brand", href="/") GothamSkies
           div(class="nav-collapse collapse")
-            ul(class="nav")
+            if (authenticated)
+              p(class="navbar-text pull-right") Hello, <a href="#" class="navbar-link">#{me.first}</a>!
+            else
+              p(class="navbar-text pull-right") Hello, guest!
+          //  ul(class="nav")
               li(class="active"): a(href="/") hello
               li: a(href="/") world!
 
@@ -44,7 +54,7 @@ html(lang="en")
           else if (me.type == 'host')
             li: a(href="/newroof") Add a Rooftop 
           else
-                  // if accountType isn't set, display nothing.
+            // if accountType isn't set, display nothing.
           li: a(href="/userrequests") Requests
           li: a(href="/logout") Logout
           // li: a(href="/setup") My Account
@@ -56,5 +66,5 @@ html(lang="en")
       block body
       hr
       footer
-        p &copy 2012, H&A, Inc. &middot; <a href="/">Privacy</a> &middot; <a href="/">Terms</a>
+        p &copy 2012 &middot; H&A, Inc. &middot; <a href="/">Privacy</a> &middot; <a href="/">Terms</a>
     

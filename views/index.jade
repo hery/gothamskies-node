@@ -1,7 +1,7 @@
 extends layout
 block body
-  if (authenticated)
-    j Welcome, #{me.first}!
-  else
-    p Welcome, guest!
+  div(class="hero-unit")
+    h1(class="hero-text") The sky is ours!
+    if (!authenticated)
+      a(href="/signup") Join the fun now! 
 

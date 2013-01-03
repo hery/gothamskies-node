@@ -202,6 +202,7 @@ var Roof = mongoose.model('Roof', new Schema({
     owner: String,
     ownerName: String,
     location: String,
+    neighborhood: String,
     picture: String
 }));
 
@@ -212,6 +213,7 @@ var AccessRequest = mongoose.model('AccessRequest', new Schema({
     hostName: String,
     roofId: String,
     roofName: String,
+    roofNeighborhood: String,
     date: String,
     time: String,
     paid: Boolean,

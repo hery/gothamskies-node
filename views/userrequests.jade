@@ -1,24 +1,42 @@
 extends layout
 block body
   div(class="container")
-    each request in userrequests     
-      ul
-        li        
-          h4 Request #{request._id}
-          p (From #{request.guestName} to #{request.hostName})
-          p @ #{request.roofName}, (Neighborhood)
-          p Date: #{request.date}, #{request.time}
+    table(class="table table-striped")
+      tr
+        th Request ID
+        th From
+        th To
+        th Location
+        th Date, Time
+        th Paid
+        th Confirmed
+      each request in userrequests    
+        tr
+          td <a href="#">#{request._id}</a>
+          td #{request.guestName} 
+          td #{request.hostName}
+          if (request.roofNeighborhood)
+            td #{request.roofName}, #{request.roofNeighborhood}.
+          else
+            td #{request.roofName} 
+          td #{request.date}, #{request.time}
           if (type == 'guest')
             if (!request.paid)
-              p Paid: #{request.paid} <a href="/pay">Pay</a>
-            p Confirmed: #{request.confirmed}
+              td Unpaid <a href="/pay">Pay now</a>
+            else
+              td Paid
+            if (!request.confirmed)
+              td Unconfirmed
+            else
+              td Confirmed
           else if (type == 'host')
-            p Paid: #{request.paid} 
-            p Confirmed: #{request.confirmed} 
+            if (!request.paid)
+              td Unpaid
+            else
+              td Paid
             if (!request.confirmed) 
-              <a href="/confirm/#{request._id}">Confirm</a>
-          else
-            p Prout!
-
+              td Unconfirmed <a href="/confirm/#{request._id}">Confirm now</a>
+            else
+              td Confirmed
     a(href="/") Back
 
