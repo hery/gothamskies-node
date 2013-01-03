@@ -37,6 +37,8 @@ var app = express();
 
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
+app.use(require('stylus').middleware({ src: __dirname + '/public' }));
+app.use(express.static(__dirname + '/public'))
 app.use(express.session({
         secret: 'secretpanda',
         store: new RedisStore({
@@ -62,6 +64,7 @@ app.use(function(req,res,next) {
     }
 });
 
+app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set('view options', {layout: false});
 

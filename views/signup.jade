@@ -1,31 +1,31 @@
 extends layout
 block body
-  form(action="/signup", method="POST")
-    fieldset
-      legend Sign up
-      p
-        label First 
-        input(name="user[first]", type="text")
-      p
-        label Last 
-        input(name="user[last]", type="text")
-      p
-        label Email 
-        input(name="user[email]", type="text")
-      p
-        label Validate Email 
-        input(name="validateEmail", type="text")
-      p
-        label Password 
-        input(name="user[password]", type="password")
-      p
-        label Validate Password 
-        input(name="validatePassword", type="password")
-      p 
-        label Account Type (host, guest) 
-        input(name="user[type]", type="text")
-
-      p
-        button Submit
-      p
-        a(href="/") Go back
+  div(class="container")
+    form(action="/signup", method="POST")
+      fieldset
+        legend Sign up
+        p
+          label First 
+          input(name="user[first]", type="text")
+        p
+          label Last 
+          input(name="user[last]", type="text")
+        p
+          label Email 
+          input(name="user[email]", type="text")
+        p
+          label Validate Email 
+          input(name="validateEmail", type="text")
+        p
+          label Password 
+          input(name="user[password]", type="password")
+        p
+          label Validate Password 
+          input(name="validatePassword", type="password")
+        p 
+          label Account Type (host, guest) 
+          input(name="user[type]", type="text")
+        p
+          button Submit
+        p
+          a(href="/") Go back
