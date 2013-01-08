@@ -4,6 +4,8 @@ var status = 'Not connected';
 
 var express = require('express'),
 	url = require('url'),
+  jsdom = require('jsdom'),
+  request = require('request'),
 // Use RedisStore to avoid default MemoryStore warning in production environment
 	RedisStore = require('connect-redis')(express);
 
@@ -180,7 +182,21 @@ app.get('/confirm/:requestId', function(req, res) {
 		res.redirect('/');
 	});
 });
-	
+
+app.get('/wishlist', function(req, res) {
+  var wishListID = res.locals.me.wishlistID;
+  res.render('wishlist', {wlID: wishListID});
+});
+
+app.post('/wishlist', function(req, res) {
+  var newWishListID = req.body.user.wishlistID;
+  var conditions = {_id:res.locals.me._id}
+  , update = {wishlistID:newWishListID}
+  , options = {multi:false};
+  User.update(conditions, update, options, function(err, user) {
+    res.redirect('/wishlist');
+  });
+})
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
@@ -194,6 +210,7 @@ var User = mongoose.model('User', new Schema({
     last: String,
     email: {type:String, unique:true},
     password: {type:String,index:true},
+    wishlistID: String,
     type: String
 }));
 

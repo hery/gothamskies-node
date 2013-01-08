@@ -1,0 +1,16 @@
+extends layout
+block body
+  form(action="/wishlist", method="POST")
+    fieldset
+      legend Update Wishlist
+      p
+        label Wishlist Name
+        input(type="text", value="Panda List")
+      p
+        label Wishlist ID <a href="#">(?)</a>
+        input(name="user[wishlistID]", type="text", value="#{wlID}")
+      p 
+        button(class="btn") Submit
+  fieldset
+    legend Wishlist Content
+    p Hello, panda!

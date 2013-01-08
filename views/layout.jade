@@ -1,5 +1,5 @@
 doctype 5
-html(lang="en")
+html(lang="en") 
   head
     title GothamSkies
     link(rel="stylesheet", href="http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css")
@@ -25,9 +25,6 @@ html(lang="en")
   body
     script(src="http://code.jquery.com/jquery-latest.js")
     script(src="/js/bootstrap.min.js")
-    //
-    // BODY
-    //
     div(class="navbar navbar-inverse navbar-fixed-top")
       div(class="navbar-inner")
         div(class="container")
@@ -37,14 +34,13 @@ html(lang="en")
             span(class="icon-bar")
           a(class="brand", href="/") GothamSkies
           div(class="nav-collapse collapse")
-            if (authenticated)
-              p(class="navbar-text pull-right") Hello, <a href="#" class="navbar-link">#{me.first}</a>!
+            if (!authenticated)
+              form(class="navbar-form pull-right", action="/login", method="POST"))
+                input(class="span2", type="text", placeholder="Email", name="user[email]"))
+                input(class="span2", type="password", placeholder="Password", name="user[password]")
+                button(class="btn", type="submit") Sign in
             else
-              p(class="navbar-text pull-right") Hello, guest!
-          //  ul(class="nav")
-              li(class="active"): a(href="/") hello
-              li: a(href="/") world!
-
+              p(class="navbar-text pull-right") Hello, <a href="#" class="navbar-link">#{me.first}</a>!
     div(class="container")
       if (authenticated)
         ul(class="nav nav-pills")
@@ -53,6 +49,7 @@ html(lang="en")
             li: a(href="/explore") Explore
           else if (me.type == 'host')
             li: a(href="/newroof") Add a Rooftop 
+            li: a(href="/wishlist") Wishlist
           else
             // if accountType isn't set, display nothing.
           li: a(href="/userrequests") Requests

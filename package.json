@@ -6,7 +6,9 @@
     "jade": "0.27.5",
     "mongoose": "3.2.1",
     "memjs": "0.1.x",
-    "stylus": "*"
+    "stylus": "*",
+    "jsdom": "*",
+    "request": "*"
   },
   "subdomain": "gothamskies",
   "scripts": {
