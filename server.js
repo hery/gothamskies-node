@@ -5,6 +5,7 @@ var status = 'Not connected';
 var express = require('express'),
 	url = require('url'),
   jsdom = require('jsdom'),
+  util = require('util'),
   request = require('request'),
 // Use RedisStore to avoid default MemoryStore warning in production environment
 	RedisStore = require('connect-redis')(express);
@@ -24,6 +25,7 @@ var app = express();
 // Remote db for production environment
     mongoose.connect(process.env.MONGOHQ_URL, function (req,res) { 
     console.log('Connected to db.');
+    console.log('---');
     status = 'Connected';
 });
 
@@ -184,9 +186,45 @@ app.get('/confirm/:requestId', function(req, res) {
 });
 
 app.get('/wishlist', function(req, res) {
-  var wishListID = res.locals.me.wishlistID;
-  res.render('wishlist', {wlID: wishListID});
+  var wishListID = res.locals.me.wishlistID; // e.g: 3J3CNRKGZ6NNP
+  var uri = util.format('http://www.amazon.com/registry/wishlist/%s?layout=compact', wishListID);
+  fetchWishlistWithURI(uri, function(wishlistContent) {
+    console.log(wishlistContent);
+    res.render('wishlist', {wlID: wishListID, wishlistContent:wishlistContent});
+  });
 });
+
+function fetchWishlistWithURI(uri, callback) {
+  request({uri: uri}, function(err, response, body) {
+    var wishlistContent = new Array();
+    if (err && response.statusCode !== 200) { console.log('Request error.'); } 
+    jsdom.env({
+      html: body,
+      scripts: ['http://code.jquery.com/jquery-1.6.min.js']
+    }, function (err, window) {
+      var $ = window.jQuery,
+          $body = $('body'),
+          $items = $body.find('table.compact-items.wlrdZeroTable');
+      var $tbody = $items.find('tbody');
+          $tbody.each(function (i, item) {
+            var $a = $(item).find('a:first'),
+                $href = $a.attr('href'),
+                $name = $a.text(),
+                regex = RegExp("(dp|gp/product)/(\\w+/)?(\\w{10})"),
+                urls = $href.match(regex), // m contains array of matching urls, i.e:
+                asin = urls[3],
+                $price = $(item).find('span.price').text();
+            wishlistContent[i] = {
+              href: $href,
+              name: $name,
+              asin: asin,
+              price: $price
+            };
+          });
+    callback(wishlistContent);
+    });
+  });
+}
 
 app.post('/wishlist', function(req, res) {
   var newWishListID = req.body.user.wishlistID;
@@ -196,7 +234,7 @@ app.post('/wishlist', function(req, res) {
   User.update(conditions, update, options, function(err, user) {
     res.redirect('/wishlist');
   });
-})
+});
 
 var port = process.env.PORT || 5000;
 app.listen(port, function() {
