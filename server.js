@@ -134,9 +134,82 @@ app.get('/explore', function(req,res) {
 		if (err) return next(err);
 		if (!doc) return res.send("No available rooftops.");
 		var roof = doc;
-		res.render('explore', {roofs:doc});	
-	});
+
+    minimumOfferValues(roof, function(minimumOfferValues) {
+      res.render('explore', {roofs:roof, minOffers:minimumOfferValues});
+    });
+
+    // var minimumOfferValues = new Array(roof.length);
+    // var currentRoofWishList;
+    // var uri;
+    // var roofOwnerID;
+    // var roofOwner;
+    // var roofOwnerWishlistID;
+    // 
+    // // loop in roofs array to get each roof's minimium offer values
+    // for (var i=0; i<roof.length; i++) {
+    //   roofOwnerID = roof[i].owner;
+    //   console.log(roofOwnerID);
+    //   User.findOne({_id:roofOwnerID}, function(err, owner) {
+    //     roofOwnerWishListID = owner.wishlistID;
+    //     uri = util.format('http://www.amazon.com/registry/wishlist/%s?layout=compact', roofOwnerWishListID);
+    //     fetchWishlistWithURI(uri, function(wishlistContent) {
+    //       var wishlistPrices = new Array(wishlistContent.length);
+    //       for (var j=0; j<wishlistContent.length; j++) {
+    //         var priceAtIndex  = parseFloat(wishlistContent[j].price.substring(1));
+    //         if (priceAtIndex) {
+    //           wishlistPrices[j] = priceAtIndex;
+    //         } else {
+    //           wishlistPrices[j] = Infinity;
+    //         }
+    //       }  
+    //         // console.log(wishlistPrices);    
+    //         minimumOfferValues[i] = Math.min.apply(null, wishlistPrices);
+    //         console.log(minimumOfferValues[i]);
+    //     });
+    //   });
+    // // console.log(minimumOfferValues);
+		// res.render('explore', {roofs:doc, minOffers:minimumOfferValues});	
+    // }
+    
+  });
 });
+
+function minimumOfferValues(roof, callback) {
+    var minimumOfferValues = new Array(roof.length);
+    var currentRoofWishList;
+    var uri;
+    var roofOwnerID;
+    var roofOwner;
+    var roofOwnerWishlistID;
+    var roofName;
+    
+    // loop in roofs array to get each roof's minimium offer values
+    for (var i=0; i<roof.length; i++) {
+      // console.log(roof[i].name);
+      roofOwnerID = roof[i].owner;
+      roofName = roof[i].name;
+      // console.log(roofOwnerID);
+      User.findOne({_id:roofOwnerID}, function(err, owner) {
+        roofOwnerWishListID = owner.wishlistID;
+        uri = util.format('http://www.amazon.com/registry/wishlist/%s?layout=compact', roofOwnerWishListID);
+        fetchWishlistWithURI(uri, function(wishlistContent) {
+          var wishlistPrices = new Array(wishlistContent.length);
+          for (var j=0; j<wishlistContent.length; j++) { // loop within wishlist
+            var priceAtIndex  = parseFloat(wishlistContent[j].price.substring(1));
+            if (priceAtIndex) {
+              wishlistPrices[j] = priceAtIndex;
+            } else {
+              wishlistPrices[j] = Infinity;
+            }
+          }  
+          minimumOfferValues[i] = Math.min.apply(null, wishlistPrices);
+          console.log(minimumOfferValues[i]);
+        });
+      });
+    }
+    callback(minimumOfferValues);
+}
 
 app.get('/roof/:roofid', function(req,res) {
 	// Overkill declaration..?
