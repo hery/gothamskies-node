@@ -12,10 +12,16 @@ var express = require('express'),
 
 var app = express();
 
- app.configure('production', function () {
-     var rtg = require("url").parse(process.env.REDISTOGO_URL);
+ app.configure('development', function () {
+     var rtg = .parse(process.env.REDISTOGO_URL);
+     console.log(rtg);
      var redis = require("redis").createClient(rtg.port, rtg.hostname);
      redis.auth(rtg.auth.split(":")[1]);
+
+     app.set('redisHost', rtg.hostname);
+     app.set('redisPort', rtg.port);
+     app.set('redisDb', rtg.auto.split(":")[0]);
+     app.set('redisPass', rtg.auto.split(":")[1]);
  });
 
 // Remote db for production environment
