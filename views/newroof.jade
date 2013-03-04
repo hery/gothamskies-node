@@ -1,0 +1,24 @@
+extends layout
+block body
+  div(class="container")
+    form(action="/newroof", method="POST")
+      fieldset
+        legend Add roof
+        p
+          label Name 
+          input(name="roof[name]", type="text")
+        p
+          label Address 
+          input(name="roof[location]", type="text")
+        p
+          label Neighborhood
+          select(name="roof[neighborhood]")
+            option(value="Tribeca") Tribeca
+            option(value="Upper East Side")  Upper East Side
+        p
+          label Picture 
+          input(name="roof[picture]", type="text")
+        p   
+          a(href="/", class="btn") Go back
+          button(class="btn") Submit
+        

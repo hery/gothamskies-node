@@ -1,0 +1,18 @@
+extends layout
+block body
+  div(class="container")      
+    h4 Available rooftops
+    table(class="table table-striped")
+      tr
+        th Name
+        th Neighborhood
+        th Minimum Offer
+      each roof,i in roofs
+        tr
+          td <a href="/roof/#{roof._id}">#{roof.name}</a>
+          td #{roof.neighborhood}
+          if (!minOffers[i])
+            td $0 
+          else
+            td $#{minOffers[i]}
+    p: a(href="/") back

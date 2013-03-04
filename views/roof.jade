@@ -1,0 +1,22 @@
+extends layout
+block body
+  div(class="container")
+    form(action="/accessreq", method="POST")
+     fieldset
+       legend Access Request
+       p #{roof.name}, #{roof.location}, #{roof.neighborhood}.
+       p 
+         label Date 
+         input(type="text", name="AccessRequest[date]", id="datepicker")
+       p 
+          label Time 
+          input(type="text", name="AccessRequest[time]")
+       p
+         input(type="hidden", name="AccessRequest[hostId]", value="#{roof.owner}")
+         input(type="hidden", name="AccessRequest[hostName]", value="#{roof.ownerName}")
+         input(type="hidden", name="AccessRequest[roofId]", value="#{roof._id}")
+         input(type="hidden", name="AccessRequest[roofName]", value="#{roof.name}")
+         input(type="hidden", name="AccessRequest[roofNeighborhood]", value="#{roof.neighborhood}")
+       p
+         <a href="/explore" class="btn">Back</a> <button class="btn">Submit</button>
+         

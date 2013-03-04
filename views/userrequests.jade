@@ -1,0 +1,42 @@
+extends layout
+block body
+  div(class="container")
+    table(class="table table-striped")
+      tr
+        th Request ID
+        th From
+        th To
+        th Location
+        th Date, Time
+        th Paid
+        th Confirmed
+      each request in userrequests    
+        tr
+          td <a href="#">#{request._id}</a>
+          td #{request.guestName} 
+          td #{request.hostName}
+          if (request.roofNeighborhood)
+            td #{request.roofName}, #{request.roofNeighborhood}.
+          else
+            td #{request.roofName} 
+          td #{request.date}, #{request.time}
+          if (type == 'guest')
+            if (!request.paid)
+              td Unpaid <a href="/pay">Pay now</a>
+            else
+              td Paid
+            if (!request.confirmed)
+              td Unconfirmed
+            else
+              td Confirmed
+          else if (type == 'host')
+            if (!request.paid)
+              td Unpaid
+            else
+              td Paid
+            if (!request.confirmed) 
+              td Unconfirmed <a href="/confirm/#{request._id}">Confirm now</a>
+            else
+              td Confirmed
+    a(href="/") Back
+
