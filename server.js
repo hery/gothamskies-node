@@ -137,6 +137,7 @@ app.post('/newroof', function(req,res) {
 		res.redirect('/');	
 });
 
+// explore roof page
 app.get('/explore', function(req,res) {
 	Roof.find({}, function(err, doc) {
 		if (err) return next(err);
@@ -146,6 +147,7 @@ app.get('/explore', function(req,res) {
 	});
 });
 
+// get roof page
 app.get('/roof/:roofid', function(req,res) {
 	// Overkill declaration..?
 	// var ObjectId = require('mongoose').Types.ObjectId;
