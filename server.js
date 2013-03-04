@@ -13,7 +13,7 @@ var express = require('express'),
 var app = express();
 
  app.configure('development', function () {
-     var rtg = .parse(process.env.REDISTOGO_URL);
+     var rtg = url.parse(process.env.REDISTOGO_URL);
      console.log(rtg);
      var redis = require("redis").createClient(rtg.port, rtg.hostname);
      redis.auth(rtg.auth.split(":")[1]);
