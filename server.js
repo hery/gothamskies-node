@@ -13,8 +13,9 @@ var express = require('express'),
 var app = express();
 
  app.configure('production', function () {
-    var redisUrl = url.parse(process.env.MYREDIS_URL),
-        redisAuth = redisUrl.auth.split(':');  
+    var rtg   = require("url").parse(process.env.REDISTOGO_URL);
+    var redis = require("redis").createClient(rtg.port, rtg.hostname);
+    redis.auth(rtg.auth.split(":")[1]);
 
     app.set('redisHost', redisUrl.hostname);
     app.set('redisPort', redisUrl.port);
