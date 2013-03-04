@@ -18,10 +18,10 @@ var app = express();
      var redis = require("redis").createClient(rtg.port, rtg.hostname);
      redis.auth(rtg.auth.split(":")[1]);
 
-     // app.set('redisHost', rtg.hostname);
-     // app.set('redisPort', rtg.port);
-     // app.set('redisDb', rtg.auto.split(":")[0]);
-     // app.set('redisPass', rtg.auto.split(":")[1]);
+     app.set('redisHost', rtg.hostname);
+     app.set('redisPort', rtg.port);
+     app.set('redisDb', rtg.auto.split(":")[0]);
+     app.set('redisPass', rtg.auto.split(":")[1]);
  });
 
 // Remote db for production environment
@@ -41,15 +41,15 @@ app.use(express.bodyParser());
 app.use(express.cookieParser());    
 app.use(require('stylus').middleware({ src: __dirname + '/public' }));
 app.use(express.static(__dirname + '/public'));
-//app.use(express.session({
-//        secret: 'secretpanda',
-//        store: new RedisStore({
-//            host: app.set('redisHost'),
-//            port: app.set('redisPort'),
-//            db: app.set('redisDb'),
-//            pass: app.set('redisPass')
-//        })
-//    }));
+app.use(express.session({
+  secret: 'secretpanda',
+  store: new RedisStore({
+      host: app.set('redisHost'),
+      port: app.set('redisPort'),
+      db: app.set('redisDb'),
+      pass: app.set('redisPass')
+  })
+}));
 
 // Authentication middleware // Needs some review
 app.use(function(req,res,next) {
