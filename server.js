@@ -20,8 +20,8 @@ var app = express();
 
      app.set('redisHost', rtg.hostname);
      app.set('redisPort', rtg.port);
-     app.set('redisDb', rtg.auto.split(":")[0]);
-     app.set('redisPass', rtg.auto.split(":")[1]);
+     app.set('redisDb', rtg.auth.split(":")[0]);
+     app.set('redisPass', rtg.auth.split(":")[1]);
  });
 
 // Remote db for production environment
