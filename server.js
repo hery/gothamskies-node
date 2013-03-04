@@ -82,14 +82,17 @@ app.get('/', function (req,res) {
     }
 });
 
+// login page
 app.get('/login', function (req,res) {
     res.render('login', {signupEmail:''});
 });
 
+// login with email parameter
 app.get('/login/:signupEmail', function (req,res) {
     res.render('login', {signupEmail: req.params.signupEmail});
 });
 
+// submit login form
 app.post('/login', function (req,res) {
     User.findOne({ email: req.body.user.email, password: req.body.user.password }, function (err,doc) {
         if (err) return next(err);
@@ -99,10 +102,12 @@ app.post('/login', function (req,res) {
     });
 });
 
+// signup page
 app.get('/signup', function(req,res) {
     res.render('signup');
 });
 
+// submit signup form
 app.post('/signup', function(req,res,next) {
     var user = new User(req.body.user).save(function(err, user) {    
         if (err) return next(err);
@@ -110,15 +115,18 @@ app.post('/signup', function(req,res,next) {
     });
 });
 
+// logout user
 app.get('/logout', function(req,res) {
     req.session.loggedIn = null;
     res.redirect('/');
 });
 
+// new roof page
 app.get('/newroof', function(req,res) {
 	res.render('newroof');	
 });
 
+// submit new roof
 app.post('/newroof', function(req,res) {
 	var roof = new Roof(req.body.roof);
 	roof.set({owner: res.locals.me._id,
@@ -129,6 +137,7 @@ app.post('/newroof', function(req,res) {
 		res.redirect('/');	
 });
 
+// explore roof page
 app.get('/explore', function(req,res) {
 	Roof.find({}, function(err, doc) {
 		if (err) return next(err);
@@ -211,6 +220,7 @@ function minimumOfferValues(roof, callback) {
     callback(minimumOfferValues);
 }
 
+// get roof page
 app.get('/roof/:roofid', function(req,res) {
 	// Overkill declaration..?
 	// var ObjectId = require('mongoose').Types.ObjectId;
