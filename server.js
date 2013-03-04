@@ -12,7 +12,7 @@ var express = require('express'),
 
 var app = express();
 
- app.configure('development', function () {
+ app.configure('production', function () {
      var rtg = url.parse(process.env.REDISTOGO_URL);
      console.log(rtg);
      var redis = require("redis").createClient(rtg.port, rtg.hostname);
@@ -36,10 +36,6 @@ var app = express();
 //     console.log('Connected to db.');
 //     status = 'Connected';
 // });
-
-// Was going to use MemJS as a MemoryStore, but no.
-// var MemJS = require("memjs").Client;
-// memjs = MemJS.create()
 
 app.use(express.bodyParser());
 app.use(express.cookieParser());    
