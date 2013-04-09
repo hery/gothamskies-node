@@ -70,7 +70,21 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
 app.set('view options', {layout: false});
 
+function absDistinct ( A ) {
+  var newArray = new Array();
+  for (var i=0; i<A.length; i++) {
+    if (newArray.indexOf(Math.abs(A[i])) == -1) { 
+      newArray.push(A[i]);
+    }
+    console.log(newArray);
+  }
+  return newArray.length;
+}
+
 app.get('/', function (req,res) {
+    var testArray = [-5,-3,-1,0,3,6];
+    console.log(absDistinct(testArray));
+
     if (req.session.loggedIn) {
     	username = res.locals.me.first;
 	usertype = res.locals.me.type;
